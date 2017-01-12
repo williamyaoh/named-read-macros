@@ -64,7 +64,7 @@
               (if (and (string= (subseq (funcall case-transform-fn end-str) 4)
                                 (symbol-name symbol))
                        (char= (peek-char nil stream t nil t) #\) ))
-                  (progn (read-char) (return))
+                  (progn (read-char stream) (return))
                   (write-string end-str contents)))))))
 
 (defun check-if-bound (symb)
