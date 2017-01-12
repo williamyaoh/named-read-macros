@@ -89,14 +89,26 @@
             (cons head (read-delimited-list #\) stream t))))))
 
 (defmacro define (name &body body)
-  "Allows for read macros to look the same as normal macros.
-   That is, (NAME <CONTENT>) will be able to read CONTENT as a stream
-   of characters, not as already-read Lisp forms, if NAME is defined
-   as a named read macro.
+  "Creates a named read macro, which executes `BODY` in a context where
+   `*STANDARD-INPUT*` is bound to a stream containing just the contents which
+   the read macro was called with, and associates this macro with `NAME`.
 
-   BODY should return a Lisp form, which will be used the same as a return
-   from any other read macro. BODY will be executed in a context where
-   *STANDARD-INPUT* is bound to the stream containing CONTENT."
+   Just like a normal macro, `BODY` should return a Lisp form to then get
+   evaluated where the named read macro was called.
+
+   Because `NAMED-READ-MACROS` hijacks the Lisp reader, we can't rely on matching
+   parentheses to know when the newly-defined read macro *ends*, so we look for
+   the sequence of characters `"END-${NAME}"`, *immediately* followed by a
+   close parenthesis, in order to know when the read macro ends. Case is checked
+   against `NAME` by transforming the ending string according to the case of the
+   current readtable; if `(SYMBOL-NAME NAME)` matches the transforming ending
+   string exactly, we've found the end tag. In particular, this means that
+   using `DEFINE` with a pipe-enclosed string with mixed case will make such a
+   read macro impossible to end under the standard readtable (though why one
+   would define such a macro is another question entirely!)
+
+   Leading whitespace after opening the read macro will not be passed to `BODY`,
+   but trailing whitespace before the ending tag will."
   (let ((stream (gensym "STREAM")))
     `(eval-when (:load-toplevel :execute)
        (check-if-bound ',name)
