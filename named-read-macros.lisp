@@ -108,7 +108,14 @@
    would define such a macro is another question entirely!)
 
    Leading whitespace after opening the read macro will not be passed to `BODY`,
-   but trailing whitespace before the ending tag will."
+   but trailing whitespace before the ending tag will.
+
+   Note that `DEFINE` has no compile-time effects by default; the rationale
+   is that doing so would also require any functions used by a read macro
+   defined by `DEFINE` to be available at compile-time. Since this is not the
+   usual, `DEFINE` explicitly has no compile-time effects to avoid this problem.
+   If you want a named read macro to be available at compile-time, wrap `DEFINE`
+   and any necessary functions in an explicit `EVAL-WHEN`."
   (let ((stream (gensym "STREAM")))
     `(eval-when (:load-toplevel :execute)
        (check-if-bound ',name)
