@@ -98,7 +98,7 @@
 
    Because `NAMED-READ-MACROS` hijacks the Lisp reader, we can't rely on matching
    parentheses to know when the newly-defined read macro *ends*, so we look for
-   the sequence of characters `"END-${NAME}"`, *immediately* followed by a
+   the sequence of characters `'END-${NAME}'`, *immediately* followed by a
    close parenthesis, in order to know when the read macro ends. Case is checked
    against `NAME` by transforming the ending string according to the case of the
    current readtable; if `(SYMBOL-NAME NAME)` matches the transforming ending
