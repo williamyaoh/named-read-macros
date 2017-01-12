@@ -27,6 +27,11 @@
 
 (in-package #:asdf)
 (defsystem #:named-read-macros
+  :author "William Yao <williamyaoh@gmail.com>"
+  :maintainer "William Yao <williamyaoh@gmail.com>"
+  :description "Name and call read macros using symbols instead of characters."
+  :version "1.0.0"
+  :license "BSD-3"
   :depends-on ("named-readtables")
   :serial t
   :components ((:file "packages")
