@@ -46,14 +46,18 @@ switch your readtable to `NAMED-READ-MACROS:READTABLE`, or fuse a read table
 you're using with `NAMED-READ-MACROS:READTABLE-MIXIN`.
 
 + **READTABLE**
+
   Contains the standard readtable, but with the macro character for `#\(`
   rewritten to check for a named read macro in the head position.
+  
 + **READTABLE-MIXIN**
+
   Just contains the rewritten macro for `#\(`.
   
 Then define a named read macro with `NAMED-READ-MACROS:DEFINE`.
 
 + **DEFINE** NAME &BODY BODY
+
   Creates a named read macro, which executes `BODY` in a context where
   `*STANDARD-INPUT*` is bound to a stream containing just the contents which
   the read macro was called with, and associates this macro with `NAME`.
