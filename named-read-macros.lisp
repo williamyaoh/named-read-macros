@@ -34,7 +34,7 @@
                                                           contents)
                                             (write-char char contents)
                                             (setf pos end-name)))))))
-              (if (and (string= (funcall case-transform-fn (subseq end-str 4))
+              (if (and (string= (subseq (funcall case-transform-fn end-str) 4)
                                 (symbol-name symbol))
                        (char= (peek-char nil stream t nil t) #\) ))
                   (progn (read-char) (return))
