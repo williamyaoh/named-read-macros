@@ -61,8 +61,8 @@
    from any other read macro. BODY will be executed in a context where
    *STANDARD-INPUT* is bound to the stream containing CONTENT."
   (let ((stream (gensym "STREAM")))
-    `(eval-when (:compile-toplevel :load-toplevel :execute)
-       (setf (get ',name 'dispatch-macro)
+    `(eval-when (:load-toplevel :execute)
+       (setf (get ',name 'read-macro)
              (lambda (,stream)
                (let ((*standard-input* ,stream))
                  ,@body)))
