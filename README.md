@@ -20,16 +20,16 @@ and call it like any other function or macro.
     (loop for char = (read-char *standard-input* nil nil t)
           while char
           do (write-char char output))))
-          
+
 (escapify
   Any characters I put in here will be put into the output string, even
   things that would normally require escapes, like backslashes!
-  
+
   \ \ \ \
 end-escapify)
  => "Any characters I put in here will be put into the output string, even
        things that would normally require escapes, like backslashes!
-       
+
        \\ \\ \\ \\"
 ```
 
@@ -49,11 +49,11 @@ you're using with `NAMED-READ-MACROS:READTABLE-MIXIN`.
 
   Contains the standard readtable, but with the macro character for `#\(`
   rewritten to check for a named read macro in the head position.
-  
+
 + **READTABLE-MIXIN**
 
   Just contains the rewritten macro for `#\(`.
-  
+
 Then define a named read macro with `NAMED-READ-MACROS:DEFINE`.
 
 + **DEFINE** NAME &BODY BODY
@@ -61,24 +61,24 @@ Then define a named read macro with `NAMED-READ-MACROS:DEFINE`.
   Creates a named read macro, which executes `BODY` in a context where
   `*STANDARD-INPUT*` is bound to a stream containing just the contents which
   the read macro was called with, and associates this macro with `NAME`.
-  
+
   Just like a normal macro, `BODY` should return a Lisp form to then get
   evaluated where the named read macro was called.
-  
+
   Because `NAMED-READ-MACROS` hijacks the Lisp reader, we can't rely on matching
   parentheses to know when the newly-defined read macro *ends*, so we look for
-  the sequence of characters `"END-${NAME}"`, *immediately* followed by a
-  close parenthesis, in order to know when the read macro ends. Case is checked
+  the sequence of characters `"END-${NAME}"`, *immediately* followed by a close
+  parenthesis, in order to know when the read macro ends. Case is checked
   against `NAME` by transforming the ending string according to the case of the
-  current readtable; if `(SYMBOL-NAME NAME)` matches the transforming ending
-  string exactly, we've found the end tag. In particular, this means that
-  using `DEFINE` with a pipe-enclosed string with mixed case will make such a
-  read macro impossible to end under the standard readtable (though why one
+  current readtable; if `(SYMBOL-NAME NAME)` matches the transformed ending
+  string exactly, we've found the end tag. In particular, this means that using
+  `DEFINE` with a pipe-enclosed symbol with lowercase characters will make such
+  a read macro impossible to end under the standard readtable (though why one
   would define such a macro is another question entirely!)
-  
+
   Leading whitespace after opening the read macro will not be passed to `BODY`,
   but trailing whitespace before the ending tag will.
-  
+
   Note that `DEFINE` has no compile-time effects by default; the rationale
   is that doing so would also require any functions used by a read macro
   defined by `DEFINE` to be available at compile-time. Since this is not the

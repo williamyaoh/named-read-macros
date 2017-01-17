@@ -1,29 +1,29 @@
-;; Copyright (c) 2017, William Yao 
-;; All rights reserved. 
+;; Copyright (c) 2017, William Yao
+;; All rights reserved.
 
-;; Redistribution and use in source and binary forms, with or without 
-;; modification, are permitted provided that the following conditions are met: 
+;; Redistribution and use in source and binary forms, with or without
+;; modification, are permitted provided that the following conditions are met:
 
-;;  * Redistributions of source code must retain the above copyright notice, 
-;;    this list of conditions and the following disclaimer. 
-;;  * Redistributions in binary form must reproduce the above copyright 
-;;    notice, this list of conditions and the following disclaimer in the 
-;;    documentation and/or other materials provided with the distribution. 
-;;  * Neither the name of  nor the names of its contributors may be used to 
-;;    endorse or promote products derived from this software without specific 
-;;    prior written permission. 
+;;  * Redistributions of source code must retain the above copyright notice,
+;;    this list of conditions and the following disclaimer.
+;;  * Redistributions in binary form must reproduce the above copyright
+;;    notice, this list of conditions and the following disclaimer in the
+;;    documentation and/or other materials provided with the distribution.
+;;  * Neither the name of  nor the names of its contributors may be used to
+;;    endorse or promote products derived from this software without specific
+;;    prior written permission.
 
-;; THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
-;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
-;; IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
-;; ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
-;; LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
-;; CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
-;; SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
-;; INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
-;; CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-;; POSSIBILITY OF SUCH DAMAGE. 
+;; THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+;; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+;; IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+;; ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+;; LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+;; CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+;; SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+;; INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+;; CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+;; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+;; POSSIBILITY OF SUCH DAMAGE.
 
 (in-package #:named-read-macros)
 
@@ -96,16 +96,17 @@
    Just like a normal macro, `BODY` should return a Lisp form to then get
    evaluated where the named read macro was called.
 
-   Because `NAMED-READ-MACROS` hijacks the Lisp reader, we can't rely on matching
-   parentheses to know when the newly-defined read macro *ends*, so we look for
-   the sequence of characters `'END-${NAME}'`, *immediately* followed by a
-   close parenthesis, in order to know when the read macro ends. Case is checked
-   against `NAME` by transforming the ending string according to the case of the
-   current readtable; if `(SYMBOL-NAME NAME)` matches the transforming ending
-   string exactly, we've found the end tag. In particular, this means that
-   using `DEFINE` with a pipe-enclosed string with mixed case will make such a
-   read macro impossible to end under the standard readtable (though why one
-   would define such a macro is another question entirely!)
+   Because `NAMED-READ-MACROS` hijacks the Lisp reader, we can't rely on
+   matching parentheses to know when the newly-defined read macro *ends*, so we
+   look for the sequence of characters `'END-${NAME}'`, *immediately* followed
+   by a close parenthesis, in order to know when the read macro ends. Case is
+   checked against `NAME` by transforming the ending string according to the
+   case of the current readtable; if `(SYMBOL-NAME NAME)` matches the
+   transformed ending string exactly, we've found the end tag. In particular,
+   this means that using `DEFINE` with a pipe-enclosed symbol with lowercase
+   characters will make such a read macro impossible to end under the standard
+   readtable (though why one would define such a macro is another question
+   entirely!)
 
    Leading whitespace after opening the read macro will not be passed to `BODY`,
    but trailing whitespace before the ending tag will.
