@@ -10,6 +10,7 @@ env:
     - LISP=ccl32
     - LISP=sbcl
     - LISP=sbcl32
+    - LISP=sbcl COVERALLS=true
     - LISP=cmucl
     - LISP=ecl
 
@@ -27,14 +28,36 @@ notifications:
 install:
   - if [ "$LISP" = "allegro" ]; then sudo apt-get install libc6-dev-i386 libffi-dev:i386; fi
   - curl -L https://github.com/luismbo/cl-travis/raw/master/install.sh | sh
+  - if [ -n "$COVERALLS" ];
+    then
+      git clone https://github.com/fukamachi/cl-coveralls ~/lisp/cl-coveralls;
+      cd ~/lisp/cl-coveralls;
+      git checkout a7dea1803f4b5aae8f939db6bbf26ab4389f71ff;
+    fi
 
 script:
-  - cl -l named-readtables
-       -e "(in-package :cl-user)
+  - if [ -n "$COVERALLS" ]
+    ; then
+      cl -l named-readtables
+         -l fiveam
+         -l cl-coveralls
+         -e '(in-package :cl-user)
              (setf *debugger-hook*
                    (lambda (c h)
                      (declare (ignore c h))
-                     (uiop:quit 1)))"
-       -e "(ql:quickload 'named-read-macros-test)"
-       -e "(or (fiveam:run! 'named-read-macros-test:named-read-macros-tests)
-               (uiop:quit 1))"
+                     (uiop:quit 1)))'
+         -e "(coveralls:with-coveralls (:exclude (list \"test\"))
+               (ql:quickload 'named-read-macros-test)
+               (asdf:test-system 'named-read-macros))"
+    ; else
+      cl -l named-readtables
+         -l fiveam
+         -e '(in-package :cl-user)
+             (setf *debugger-hook*
+                   (lambda (c h)
+                     (declare (ignore c h))
+                     (uiop:quit 1)))'
+         -e "(ql:quickload 'named-read-macros-test)"
+         -e "(or (fiveam:run! 'named-read-macros-test:named-read-macros-tests)
+                 (uiop:quit 1))"
+    ; fi
