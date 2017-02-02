@@ -1,0 +1,4 @@
+;; Need to make sure empty lists still get read correctly.
+
+(list)
+()

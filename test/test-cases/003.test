@@ -1,0 +1,4 @@
+;; Do we interfere with normal stuff?
+
+(list 'defun 'foo () nil)
+(defun foo () nil)
