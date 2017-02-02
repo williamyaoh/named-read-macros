@@ -1,4 +1,4 @@
-# NAMED-READ-MACROS [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+# NAMED-READ-MACROS [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause) [![Build Status](https://travis-ci.org/williamyaoh/named-read-macros.svg?branch=master)](https://travis-ci.org/williamyaoh/named-read-macros)
 
 Copyright (c) 2017 William Yao
 
