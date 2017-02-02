@@ -1,0 +1,5 @@
+;; Lowercase readtable.
+
+:downcase
+"foo"
+(escapify foo end-escapify)

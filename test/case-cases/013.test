@@ -1,0 +1,5 @@
+;; Invert case.
+
+:invert
+"foo"
+(ESCAPIFY foo EnD-escapify)

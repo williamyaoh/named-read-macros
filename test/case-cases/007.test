@@ -1,0 +1,5 @@
+;; Preserve case.
+
+:preserve
+"foo"
+(eScApIfY foo EnD-eScApIfY)

@@ -82,3 +82,44 @@
     (unbind-read-macro% symbol))
   (makunbound '*bar)
   (fmakunbound 'baz))
+
+;; For the same reason as above, we read forms from a file instead of
+;; placing them in here. Test cases for readtable case are in `case-cases/`.
+;; Before the two forms that get compared is a symbol indicating the readtable
+;; case that these should get parsed in; if the first of the two compared forms
+;; is a symbol, it's a condition type to get checked for instead.
+
+(defparameter *case-case-directory*
+  (uiop:subpathname (asdf:system-source-directory '#:named-read-macros-test)
+                    "case-cases/"))
+
+(named-read-macros:define |eScApIfY|
+  (trim-whitespace
+   (with-output-to-string (out)
+     (loop for char = (read-char *standard-input* nil nil t)
+           while char
+           do (write-char char out)))))
+
+(named-read-macros:define |escapify|
+  (trim-whitespace
+   (with-output-to-string (out)
+     (loop for char = (read-char *standard-input* nil nil t)
+           while char
+           do (write-char char out)))))
+
+(test readtable-case-test
+  (let* ((*readtable* (named-readtables:find-readtable 'named-read-macros:readtable))
+         (old-case (readtable-case *readtable*))
+         (*package* (find-package '#:named-read-macros-test)))
+    (dolist (filename (uiop:directory-files *case-case-directory*))
+      (with-open-file (*standard-input* filename :direction :input)
+        (let ((case (read))
+              (spec (read)))
+          (setf (readtable-case *readtable*) case)
+          (if (symbolp spec)
+              (eval `(signals ,spec (read)))
+              (is (equal (eval spec) (read))
+                  "Forms don't READ to same thing in test case~A"
+                  (file-namestring filename))))
+        ;; reset readtable case between each test
+        (setf (readtable-case *readtable*) old-case)))))

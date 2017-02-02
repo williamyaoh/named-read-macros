@@ -1,0 +1,5 @@
+;; Lowercase readtable. Force an error.
+
+:downcase
+error
+(|ESCAPIFY| foo end-ESCAPIFY)

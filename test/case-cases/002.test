@@ -1,0 +1,5 @@
+;; Forcing an error through a read macro with weird case.
+
+:upcase
+error
+(|eScApIfY| foo end-eScApIfY)
