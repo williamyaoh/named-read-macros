@@ -1,0 +1,4 @@
+;; Do we interfere with normal stuff?
+
+(list 2 3 4)
+(2 3 4)

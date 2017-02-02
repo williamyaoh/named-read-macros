@@ -1,0 +1,6 @@
+;; Embedded names in our read macro.
+
+"end-escapify"
+(escapify
+ end-escapify
+ end-escapify)
