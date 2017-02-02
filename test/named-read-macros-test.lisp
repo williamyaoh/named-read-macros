@@ -2,7 +2,7 @@
 
 (defpackage #:named-read-macros-test
   (:use #:cl #:fiveam)
-  (:export #:nrm-test))
+  (:export #:named-read-macros-tests))
 (in-package #:named-read-macros-test)
 
 ;; Trying to test this package is a little bit weird, since there's the
@@ -16,6 +16,9 @@
 
 ;; The _first_ is a form which should evaluate to another form, which is then
 ;; compared EQUAL against the results of READing the named read macro.
+
+(def-suite named-read-macros-tests)
+(in-suite named-read-macros-tests)
 
 (defun trim-whitespace (string)
   (string-trim
@@ -41,3 +44,41 @@
         (is (equal (eval (read)) (read))
             "Forms don't READ to same thing in test case~A"
             (file-namestring filename))))))
+
+(defmacro finishes-nowarn (&body body)
+  `(finishes (handler-case (progn ,@body)
+               (warning (c)
+                 (declare (ignore c))
+                 (error "A warning occured while evaluating ~A."
+                        ',body)))))
+
+(defun unbind-read-macro% (symbol)
+  (setf (get symbol 'named-read-macros::read-macro) nil))
+
+(test redefinition-test
+  (finishes-nowarn
+   (named-read-macros:define *foo*
+     nil                                ; nothing...
+     ))
+
+  (defparameter *bar* :bar)
+  (signals warning
+    (named-read-macros:define *bar*
+      nil                               ; nothing...
+      ))
+
+  (defun baz ())
+  (signals warning
+    (named-read-macros:define baz
+      nil                               ; nothing...
+      ))
+
+  (signals warning
+    (named-read-macros:define *foo*
+      nil                               ; nothing...
+      ))
+
+  (dolist (symbol '(*foo* *bar* baz))
+    (unbind-read-macro% symbol))
+  (makunbound '*bar)
+  (fmakunbound 'baz))

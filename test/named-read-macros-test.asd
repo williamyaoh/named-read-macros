@@ -10,5 +10,5 @@
   :components ((:file "named-read-macros-test"))
   :perform (test-op (o s)
             (uiop:symbol-call :fiveam '#:run!
-               (uiop:find-symbol* '#:nrm-test
+               (uiop:find-symbol* '#:named-read-macros-tests
                                   '#:named-read-macros-test))))

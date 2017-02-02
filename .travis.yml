@@ -36,5 +36,5 @@ script:
                      (declare (ignore c h))
                      (uiop:quit 1)))"
        -e "(ql:quickload 'named-read-macros-test)"
-       -e "(or (fiveam:run! 'named-read-macros-test:nrm-test)
+       -e "(or (fiveam:run! 'named-read-macros-test:named-read-macros-tests)
                (uiop:quit 1))"
