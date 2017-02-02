@@ -1,0 +1,38 @@
+# Come on, Travis. I set the language directly, and you can't even
+# show it correctly in my build dashboard?
+
+language: common-lisp
+
+env:
+  matrix:
+    - LISP=abcl
+    - LISP=ccl
+    - LISP=ccl32
+    - LISP=sbcl
+    - LISP=sbcl32
+    - LISP=cmucl
+    - LISP=ecl
+
+matrix:
+  allow_failures:
+    - env: LISP=cmucl
+    - env: LISP=ecl
+  fast_finish: true
+
+notifications:
+  email:
+    on_success: change
+    on_failure: always
+
+install:
+  - if [ "$LISP" = "allegro" ]; then sudo apt-get install libc6-dev-i386 libffi-dev:i386; fi
+  - curl -L https://github.com/luismbo/cl-travis/raw/master/install.sh | sh
+
+script:
+  - cl -l named-readtables
+       -e "(in-package :cl-user)
+             (setf *debugger-hook*
+                   (lambda (c h)
+                     (declare (ignore c h))
+                     (uiop:quit 1)))"
+       -e "(asdf:load-system '#:named-read-macros)"
