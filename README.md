@@ -1,4 +1,4 @@
-# NAMED-READ-MACROS [![License](https://img.shields.io/badge/license-BSD--3-ff69b4.svg)](https://github.com/williamyaoh/named-read-macros/blob/master/LICENSE) [![Build Status](https://travis-ci.org/williamyaoh/named-read-macros.svg?branch=master)](https://travis-ci.org/williamyaoh/named-read-macros)
+# NAMED-READ-MACROS [![License](https://img.shields.io/badge/license-BSD--3-ff69b4.svg)](https://github.com/williamyaoh/named-read-macros/blob/master/LICENSE) [![Build Status](https://travis-ci.org/williamyaoh/named-read-macros.svg?branch=master)](https://travis-ci.org/williamyaoh/named-read-macros) [![Coverage Status](https://coveralls.io/repos/github/williamyaoh/named-read-macros/badge.svg?branch=master)](https://coveralls.io/github/williamyaoh/named-read-macros?branch=master)
 
 Copyright (c) 2017 William Yao
 
