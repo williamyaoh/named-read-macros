@@ -35,4 +35,6 @@ script:
                    (lambda (c h)
                      (declare (ignore c h))
                      (uiop:quit 1)))"
-       -e "(asdf:load-system '#:named-read-macros)"
+       -e "(ql:quickload 'named-read-macros-test)"
+       -e "(or (fiveam:run! 'named-read-macros-test:nrm-test)
+               (uiop:quit 1))"
