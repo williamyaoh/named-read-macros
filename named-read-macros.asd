@@ -29,7 +29,10 @@
 (defsystem #:named-read-macros
   :author "William Yao <williamyaoh@gmail.com>"
   :maintainer "William Yao <williamyaoh@gmail.com>"
-  :description "Name and call read macros using symbols instead of characters."
+  :description "Make read macros more Lispy. Attach read macros to symbols."
+  :long-description #.(format nil "Provide a definition facility to define ~
+    read macros and attach them to symbols, avoiding the possibility of ~
+    collisions in readtable characters.")
   :version "1.0.0"
   :license "BSD-3"
   :depends-on ("named-readtables")
