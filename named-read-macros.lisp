@@ -1,4 +1,4 @@
-;; Copyright (c) 2017, William Yao
+;; Copyright (c) 2017-2021, William Yao
 ;; All rights reserved.
 
 ;; Redistribution and use in source and binary forms, with or without
@@ -69,13 +69,13 @@
 
 (defun check-if-bound (symb)
   (when (fboundp symb)
-    (warn "Redefining function ~S as read macro." symb)
+    (warn 'read-macro-redefinition-warning :name symb :prev-type :function)
     (fmakunbound symb))
   (when (boundp symb)
-    (warn "Redefining variable ~S as read macro." symb)
+    (warn 'read-macro-redefinition-warning :name symb :prev-type :variable)
     (makunbound symb))
   (when (get symb 'read-macro)
-    (warn "Redefining existing read macro ~S." symb)))
+    (warn 'read-macro-redefinition-warning :name symb :prev-type :read-macro)))
 
 (defun read-maybe-read-macro (stream &optional char)
   (declare (ignorable char))
@@ -125,3 +125,18 @@
                (let ((*standard-input* ,stream))
                  ,@body)))
        ',name)))
+
+(define-condition read-macro-redefinition-warning (style-warning)
+  ((name
+    :initarg :name
+    :reader read-macro-redefinition-warning-name)
+   (prev-type
+    :initarg :prev-type
+    :reader read-macro-redefinition-warning-prev-type))
+  (:report (lambda (c stream)
+             (format stream
+                     (case (read-macro-redefinition-warning-prev-type c)
+                       (:read-macro "Redefining existing read macro ~*~S.")
+                       (otherwise "Redefining ~(~a~) ~S as read macro."))
+                     (read-macro-redefinition-warning-prev-type c)
+                     (read-macro-redefinition-warning-name c)))))
