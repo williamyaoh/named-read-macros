@@ -18,6 +18,7 @@ matrix:
   allow_failures:
     - env: LISP=cmucl
     - env: LISP=ecl
+    - env: LISP=ccl
   fast_finish: true
 
 notifications:
